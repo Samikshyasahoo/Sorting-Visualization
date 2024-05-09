@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Sorting Algorithms</title>
+</head>
+<style>
+    /* Style for the navbar */
+    body {
+        background-color: black;
+        color: white;
+    }
+
+    .navbar {
+        background-color: #333;
+        overflow: hidden;
+    }
+
+    .navbar a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    /* Style for the content */
+    .content {
+        padding: 20px;
+    }
+
+    /* Style for the buttons */
+    .btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin-right: 10px;
+        margin-top: 21px
+    }
+    .heading {
+            text-align: center;
+            font-size: 56px;
+            font-weight: bold;
+            margin-top: 232px;
+        }
+</style>
+
+<body>
+    <!-- Navbar for sorting algorithms -->
+    <div class="navbar">
+        <a href="#" onclick="selectSort('Bubble Sort')">Bubble Sort</a>
+        <a href="#" onclick="selectSort('Merge Sort')">Merge Sort</a>
+        <a href="#" onclick="selectSort('Quick Sort')">Quick Sort</a>
+        <a href="#" onclick="selectSort('Selecton Sort')">Selecton Sort</a>
+        <a href="#" onclick="selectSort('Insertion Sort')">Insertion Sort</a>
+        <a href="#" onclick="selectSort('Heap Sort')">Heap Sort</a>
+    </div>
+    <div class="heading" id="topic">
+        SORTING VISUALIZER
+    </div>
+
+
+    <!-- Description and buttons for Bubble Sort -->
+    <div id="descriptionBubbleSort" style="display: none;">
+        <button class="btn" id="runBubbleSortBtn" style="display:none;" onclick="runBubbleSort()">Run</button>
+        <button class="btn" id="shuffleBubbleSortBtn" style="display:none;" onclick="runBubbleSort()">Run</button>
+        <h2>Bubble Sort Description</h2>
+
+        <p>Bubble Sort is an iterative sorting algorithm that imitates the movement of bubbles in sparkling water. The
+            bubbles represents the elements of the data structure.
+
+            The bigger bubbles reach the top faster than smaller bubbles, and this algorithm works in the same way. It
+            iterates through the data structure and for each cycle compares the current element with the next one,
+            swapping them if they are in the wrong order.
+
+            It's a simple algorithm to implement, but not much efficient: on average, quadratic sorting algorithms with
+            the same time complexity such as Selection Sort or Insertion Sort perform better.
+            It has several variants to improve its performances, such as Shaker Sort, Odd Even Sort and Comb Sort.</p>
+        
+        <div id="complexityDiv" style="display: none;">
+            <h2>Complexity Table</h2>
+            <table border="1">
+                <!-- <tr>
+                        <th>Algorithm</th>
+                        <th>Time Complexity</th>
+                        <th>Space Complexity</th>
+                    </tr> -->
+                <tr>
+                    <td>Average case</td>
+                    <td>O(n^2)</td>
+                </tr>
+                <tr>
+                    <td>Best case</td>
+                    <td>O(n)</td>
+                </tr>
+                <tr>
+                    <td>Worst case</td>
+                    <td>O(n^2)</td>
+                </tr>
+                <tr>
+                    <td>Space complexity</td>
+                    <td>O(1)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Description and buttons for Merge Sort -->
+    <div id="descriptionMergeSort" style="display: none;">
+        <button class="btn" id="runMergeSortBtn" style="display:none;" onclick="runMergeSort()">Run</button>
+        <button class="btn" id="shuffleMergeSortBtn" style="display:none;" onclick="shuffleMergeSort()">Shuffle</button>
+        <h2>Merge Sort Description</h2>
+        <p>Merge Sort is a sorting algorithm based on the Divide et Impera technique, like Quick Sort. It can be
+            implemented iteratively or recursively, using the Top-Down and Bottom-Up algorithms respectively. We
+            represented the first one.
+
+            The algorithm divides the data structure recursively until the subsequences contain only one element. At
+            this point, the subsequences get merged and ordered sequentially. To do so, the algorithm progressively
+            builds the sorted sublist by adding each time the minimum element of the next two unsorted subsequences
+            until there is only one sublist remaining. This will be the sorted data structure</p>
+        
+
+        <div id="complexityDivMerge" style="display: none;">
+            <h2>Complexity Table</h2>
+            <table border="1">
+                <!-- <tr>
+                        <th>Algorithm</th>
+                        <th>Time Complexity</th>
+                        <th>Space Complexity</th>
+                    </tr> -->
+                <tr>
+                    <td>Average case</td>
+                    <td>O(n^2)</td>
+                </tr>
+                <tr>
+                    <td>Best case</td>
+                    <td>O(n)</td>
+                </tr>
+                <tr>
+                    <td>Worst case</td>
+                    <td>O(n^2)</td>
+                </tr>
+                <tr>
+                    <td>Space complexity</td>
+                    <td>O(1)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <div id="sortCanvas"></div>
+    </div>
+
+    <script>
+        var selectedSort = '';
+
+        // Function to select the sorting algorithm
+        function selectSort(sortName) {
+            selectedSort = sortName;
+            if (sortName === 'Bubble Sort') {
+                hideHeading('topic');
+                showDescriptionButtons('descriptionBubbleSort', 'complexityDiv', 'runBubbleSortBtn', 'shuffleBubbleSortBtn');
+            } else if (sortName === 'Merge Sort') {
+                hideHeading('topic');
+                showDescriptionButtons('descriptionMergeSort', 'complexityDivMerge','runMergeSortBtn', 'shuffleMergeSortBtn');
+            } else {
+                // Hide other descriptions/buttons if needed
+                hideDescriptionButtons('heading');
+            }
+        }
+        function hideHeading(topic) {
+            document.getElementById(topic).style.display = 'none';
+        }
+
+        // Function to show description and buttons for a specific sort
+        function showDescriptionButtons(descriptionId, runBtnId, shuffleBtnId) {
+            hideDescriptionButtons(); // Hide other descriptions/buttons
+            document.getElementById(descriptionId).style.display = 'block';
+            document.getElementById(runBtnId).style.display = 'inline-block';
+            document.getElementById(shuffleBtnId).style.display = 'inline-block';
+        }
+
+        // Function to hide all description and buttons
+        function hideDescriptionButtons() {
+            document.getElementById('descriptionBubbleSort').style.display = 'none';
+            document.getElementById('runBubbleSortBtn').style.display = 'none';
+            document.getElementById('shuffleBubbleSortBtn').style.display = 'none';
+            document.getElementById('descriptionMergeSort').style.display = 'none';
+            document.getElementById('runMergeSortBtn').style.display = 'none';
+            document.getElementById('shuffleMergeSortBtn').style.display = 'none';
+        }
+
+        // Function to run Bubble Sort
+        function runBubbleSort() {
+            fetch('/run_pygame', {
+                method: 'POST'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    alert('Running Merge Sort');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            // Run Bubble Sort logic here
+            alert('Running Bubble Sort');
+        }
+
+        // Function to shuffle Bubble Sort data
+        function shuffleBubbleSort() {
+            // Shuffle Bubble Sort data logic here
+            alert('Shuffling Bubble Sort Data');
+        }
+
+        // Function to run Merge Sort
+        function runMergeSort() {
+            // Make a POST request to Flask route to run Merge Sort
+            fetch('/run_mergesort', {
+                method: 'POST'
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    alert('Running Merge Sort');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Function to shuffle Merge Sort data
+        function shuffleMergeSort() {
+            // Shuffle Merge Sort data logic here
+            alert('Shuffling Merge Sort Data');
+        }
+    </script>
+</body>
+
+</html>
